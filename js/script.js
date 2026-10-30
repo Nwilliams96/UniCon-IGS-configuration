@@ -634,11 +634,6 @@ function bindEvents() {
     });
   });
 
-  $("#qiimeToggle").addEventListener("change", () => {
-    setVisible("qiimeBlock", $("#qiimeToggle").checked);
-    updateAll();
-  });
-
   $("#intstdToggle").addEventListener("change", () => {
     const enabled = $("#intstdToggle").checked;
     setVisible("intstdBlock", enabled);
@@ -977,7 +972,6 @@ function init() {
   $("#sampleBody").innerHTML = sampleRowHTML();
   $("#sampleCount").value = String($$("#sampleBody tr").length);
   updateDatabaseSetupText();
-  setVisible("qiimeBlock", $("#qiimeToggle").checked);
   const internalStandardsEnabled = $("#intstdToggle").checked;
   setVisible("intstdBlock", internalStandardsEnabled);
   setVisible("standards", internalStandardsEnabled);

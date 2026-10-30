@@ -18,7 +18,19 @@ test("primer and QIIME 2 controls have clearly labelled sections", () => {
   assert.match(html, /<h3>Primer sequences<\/h3>/);
   assert.match(html, /<h3>QIIME 2 environment<\/h3>/);
   assert.ok(html.indexOf("Primer sequences") < html.indexOf('id="fwdPrimer"'));
-  assert.ok(html.indexOf("QIIME 2 environment") < html.indexOf('id="qiimeToggle"'));
+  assert.ok(html.indexOf("QIIME 2 environment") < html.indexOf('id="qiime2version"'));
+});
+
+test("environment directory, raw data and file endings have their own section headings", () => {
+  for (const [heading, field] of [
+    ["Shared Conda environment directory", "conda_envs_dir"],
+    ["Raw data location", "rawdatadir"],
+    ["FASTQ file endings", "R1file_ending"],
+  ]) {
+    const headingPosition = html.indexOf(`<h3>${heading}</h3>`);
+    assert.ok(headingPosition >= 0, `${heading} should have a section heading`);
+    assert.ok(headingPosition < html.indexOf(`id="${field}"`));
+  }
 });
 
 test("internal-standard template accepts 16S and 18S SSU references", () => {

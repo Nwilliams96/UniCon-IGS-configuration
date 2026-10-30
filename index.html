@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Universal Amplicon Pipeline Configuration</title>
+  <title>UniCon-IGS — Universal Amplicon Pipeline Configuration</title>
   <link rel="stylesheet" href="css/style.css?v=full-width-note-20260804" />
   <script defer src="js/jszip.min.js"></script>
   <script defer src="js/script.js?v=flexible-sample-columns-20260810"></script>
@@ -14,7 +14,7 @@
   <header class="site-header">
     <div class="site-header__inner">
       <div class="site-title-wrap">
-        <h1>Universal Amplicon Pipeline Configuration</h1>
+        <h1>UniCon-IGS — Universal Amplicon Pipeline Configuration</h1>
         <p class="site-subtitle">Created by Jesse McNichol and Nathan LR Williams.</p>
       </div>
 
@@ -287,18 +287,27 @@ cd AMT29-analysis</pre>
           </div>
         </div>
 
+        <div class="stack">
+          <h3>Shared Conda environment directory</h3>
+        </div>
         <div class="field-group">
-          <label for="conda_envs_dir">Shared Conda environment directory</label>
+          <label for="conda_envs_dir">Directory path</label>
           <input id="conda_envs_dir" type="text" value="/project2/fuhrman_1138/Project_Nathan_Williams/eASV-conda-envs" />
           <div class="hint">Keep this outside the project clone. Snakemake checks this shared directory and reuses every completed rule environment whose definition has not changed. It creates only missing or updated environments, so future project clones do not reinstall the same software.</div>
         </div>
 
+        <div class="stack">
+          <h3>Raw data location</h3>
+        </div>
         <div class="field-group">
-          <label for="rawdatadir">Raw data location</label>
+          <label for="rawdatadir">FASTQ directory path</label>
           <input id="rawdatadir" type="text" value="/project2/fuhrman_1138/GRUMP/version-2/AMT29-DNA/00-raw" />
           <div class="hint">Enter the directory containing the FASTQ files. A trailing slash is optional.</div>
         </div>
 
+        <div class="stack">
+          <h3>FASTQ file endings</h3>
+        </div>
         <div class="two-col">
           <div class="field-group">
             <label for="R1file_ending">R1 file ending</label>
@@ -513,7 +522,7 @@ cd AMT29-analysis</pre>
 
         <div class="stack">
           <h3>QIIME 2 environment</h3>
-          <p class="small-muted">Choose whether to use an existing QIIME 2 environment definition and provide its location. This environment runs DADA2, taxonomy classification, and QIIME 2 artifact processing. The supplied QIIME 2 2026.7 definition is compatible with the official SILVA 144 classifier used by the pipeline. The classifier assigns Domain through Genus; the pipeline then adds a provisional Species label only for an unambiguous exact SILVA 144 sequence match whose genus agrees with that assignment. Unmatched or ambiguous ASVs remain blank at Species.</p>
+          <p class="small-muted">Provide a QIIME 2 environment YAML path or an installed Conda environment name. This environment runs DADA2, taxonomy classification, and QIIME 2 artifact processing. The supplied QIIME 2 2026.7 definition is compatible with the official SILVA 144 classifier used by the pipeline. The classifier assigns Domain through Genus; the pipeline then adds a provisional Species label only for an unambiguous exact SILVA 144 sequence match whose genus agrees with that assignment. Unmatched or ambiguous ASVs remain blank at Species.</p>
         </div>
 
         <aside class="note" id="qiimeCompatibilityNotice">
@@ -553,11 +562,6 @@ cd AMT29-analysis</pre>
           while jobs are running. A name that exists for one user may not exist for another.</p>
           <p><strong><a href="https://library.qiime2.org/data-resources" target="_blank" rel="noopener noreferrer">QIIME 2 classifier compatibility guidance</a></strong></p>
         </aside>
-
-        <div class="toggle-row">
-          <input id="qiimeToggle" type="checkbox" checked />
-          <label for="qiimeToggle">Show QIIME 2 environment setting</label>
-        </div>
 
         <div id="qiimeBlock" class="field-group">
           <label for="qiime2version">QIIME 2 environment: YAML path or installed name</label>
@@ -883,7 +887,7 @@ properties:
   projectName:
     type: string
     pattern: "^[A-Za-z0-9._-]+$"
-    description: project directory name used for the downloadable results folder
+    description: single project name used for the directory, output filenames, report and results folder
   samplesheet:
     type: string
     description: path to sample-sheet TSV file
