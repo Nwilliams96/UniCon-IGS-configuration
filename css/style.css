@@ -733,6 +733,11 @@ a { text-underline-offset: 4px; }
 .preamble h3 { margin: 42px 0 14px; }
 .preamble h3:first-child { margin-top: 0; }
 
+#test-dataset {
+  /* Keep the linked section heading below the sticky site navigation. */
+  scroll-margin-top: 10rem;
+}
+
 .preamble > h3,
 .preamble-figure,
 .note,

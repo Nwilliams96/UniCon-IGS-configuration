@@ -15,3 +15,7 @@ test("Bioanalyzer figures are narrower on large screens but responsive on small 
   assert.match(css, /\.preamble-figure\s*\{\s*width:\s*min\(100%,\s*1000px\);\s*margin:\s*30px auto/);
   assert.equal((html.match(/<figure class="preamble-figure">/g) || []).length, 2);
 });
+
+test("the test-dataset anchor leaves room for the sticky navigation", () => {
+  assert.match(css, /#test-dataset\s*\{[^}]*scroll-margin-top:\s*10rem;/);
+});
