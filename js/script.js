@@ -879,7 +879,6 @@ function configToYAML() {
     '',
     'samplesheet: "config/samples.tsv"',
     `projectName: "${projectName}"`,
-    `studyName: "${projectName}"`,
     ...databaseConfigLines(),
     `conda_envs_dir: "${$("#conda_envs_dir").value.trim()}"`,
     `rawdatadir: "${$("#rawdatadir").value.trim()}"`,

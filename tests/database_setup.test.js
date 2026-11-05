@@ -201,6 +201,15 @@ test("YAML quoting preserves paths and URLs containing special characters", () =
   assert.match(yaml, /classifier\.qza\?value=a&x=2/);
 });
 
+test("one project name supplies the generated YAML, clone directory and report", () => {
+  const f = fixture();
+  f.set("projectName", "001-My_Project");
+  const yaml = f.run("configToYAML()");
+  assert.equal(yaml.split("\n").filter(row => row.startsWith("projectName:")).length, 1);
+  assert.match(yaml, /^projectName: "001-My_Project"$/m);
+  assert.doesNotMatch(yaml, /studyName/);
+});
+
 test("QIIME YAML paths and installed names serialize and validate consistently", () => {
   const f = fixture();
   for (const value of ["qiime2-2026.7", "base", "../envs/qiime.yml", '/shared/a "quoted" environment.yaml']) {
@@ -243,7 +252,13 @@ test("all generated database combinations validate against the downloaded schema
     "jsonschema.Draft202012Validator.check_schema(schema)",
     "validator = jsonschema.Draft202012Validator(schema)",
     "for config in payload['configs']:",
-    "    validator.validate(yaml.safe_load(config))",
+    "    parsed = yaml.safe_load(config)",
+    "    validator.validate(parsed)",
+    "    assert parsed['projectName'] == 'AMT29-analysis'",
+    "    assert 'studyName' not in parsed",
+    "invalid = yaml.safe_load(payload['configs'][0])",
+    "del invalid['projectName']",
+    "assert list(validator.iter_errors(invalid)), 'projectName must be required'",
     "for environment in ('qiime2-2026.7', '../envs/qiime.yaml'):",
     "    config = yaml.safe_load(payload['configs'][0])",
     "    config['qiime2version'] = environment",

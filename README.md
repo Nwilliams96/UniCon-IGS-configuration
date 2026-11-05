@@ -55,7 +55,7 @@ for project Pages URLs; the explicit website redirects are therefore retained.
 - Copy buttons should work in modern browsers and also have a fallback.
 - The download button creates a ZIP file in the browser.
 - The project name is entered once and is reused for the cloned directory,
-  `projectName`, `studyName`, configuration ZIP, Results-Export folder, and
+  `projectName`, configuration ZIP, Results-Export folder, and
   report filename.
 - Internal standards can be added or removed; the generated config, sample
   columns, and internal-standard table stay synchronized.
