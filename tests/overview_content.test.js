@@ -11,6 +11,11 @@ test("welcome section no longer displays the Step 0 overview label", () => {
   assert.match(html, /<h2>Welcome to UniCon-IGS<\/h2>/);
 });
 
+test("welcome description spells out UniCon-IGS with the requested acronym emphasis", () => {
+  assert.match(html, /Welcome to UniCon-IGS: A Reproducible Snakemake Workflow for\s*<strong>Uni<\/strong>versal \(3-domain\) Ampli<strong>con<\/strong> Analysis with\s*<strong>I<\/strong>nternal <strong>G<\/strong>enomic <strong>S<\/strong>tandards\./);
+  assert.doesNotMatch(html, /Welcome to the universal amplicon pipeline configuration and setup workflow/);
+});
+
 test("Bioanalyzer figures are narrower on large screens but responsive on small screens", () => {
   assert.match(css, /\.preamble-figure\s*\{\s*width:\s*min\(100%,\s*1000px\);\s*margin:\s*30px auto/);
   assert.equal((html.match(/<figure class="preamble-figure">/g) || []).length, 2);
