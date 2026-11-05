@@ -756,7 +756,8 @@ a { text-underline-offset: 4px; }
 .preamble a { color: var(--text); }
 
 .preamble-figure {
-  margin: 30px 0;
+  width: min(100%, 1000px);
+  margin: 30px auto;
   border: 1px solid var(--border);
   border-radius: 0;
   background: var(--panel-soft);

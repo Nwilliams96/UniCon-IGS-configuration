@@ -1,6 +1,6 @@
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
-const PIPELINE_REPOSITORY = "https://github.com/Nwilliams96/515FY-926R-snakemake-NW-edits.git";
+const PIPELINE_REPOSITORY = "https://github.com/Nwilliams96/UniCon-IGS.git";
 // Keep official URLs and their checksums together. Custom URLs are never
 // rewritten and do not inherit a checksum belonging to another file.
 const SILVA_DOWNLOAD_PRESETS = {
@@ -16,13 +16,14 @@ const SILVA_DOWNLOAD_PRESETS = {
 let lastSuggestedTransferInput = "";
 const SAMPLE_PREFIX_HEADERS = ["sample"];
 const DEFAULT_SAMPLE_METADATA = {
-  "replicate": "1",
-  "condition": "AMT29-whole-seawater",
-  "Depth (m)": "2",
-  "Latitude and Longitude": "6.7321 S 49.0482 E",
-  "Longitude [degrees_east]": "49.0482",
-  "Latitude [degrees_north]": "-6.7321",
-  "time": "2019-10-16T13:20:00"
+  "replicate": "",
+  "condition": "",
+  "Depth (m)": "",
+  "Longitude [degrees_east]": "",
+  "Latitude [degrees_north]": "",
+  "time": "",
+  "sra_run": "",
+  "biosample": ""
 };
 const SAMPLE_TAIL_HEADERS = ["internal_std_normalization_factor", "units"];
 let extraSampleHeaders = Object.keys(DEFAULT_SAMPLE_METADATA);
@@ -124,16 +125,13 @@ function sampleCell(value) {
   return `<td><input class="sample-cell" value="${escapeAttribute(value)}"></td>`;
 }
 
-function sampleRowHTML(data = {}, useDefaults = true) {
-  const defaultPrefix = ["AMT29_02"];
-  const defaultTail = ["0.66666667", "L"];
+function sampleRowHTML(data = {}) {
   const standardCount = getInternalStandardIds().length;
-  const prefix = data.prefix || (useDefaults ? defaultPrefix : Array(SAMPLE_PREFIX_HEADERS.length).fill(""));
-  const extra = data.extra || (useDefaults
-    ? extraSampleHeaders.map(header => DEFAULT_SAMPLE_METADATA[header] || "")
-    : Array(extraSampleHeaders.length).fill(""));
-  const standards = data.standards || (useDefaults ? Array(standardCount).fill("52") : Array(standardCount).fill(""));
-  const tail = data.tail || (useDefaults ? defaultTail : Array(2).fill(""));
+  // Newly added rows stay blank; only the explicit test records carry sample values.
+  const prefix = data.prefix || Array(SAMPLE_PREFIX_HEADERS.length).fill("");
+  const extra = data.extra || Array(extraSampleHeaders.length).fill("");
+  const standards = data.standards || Array(standardCount).fill("");
+  const tail = data.tail || Array(SAMPLE_TAIL_HEADERS.length).fill("");
   return `
     <tr>
       ${prefix.map(sampleCell).join("")}
@@ -141,6 +139,16 @@ function sampleRowHTML(data = {}, useDefaults = true) {
       ${Array.from({ length: standardCount }, (_, index) => sampleCell(standards[index] ?? "")).join("")}
       ${tail.map(sampleCell).join("")}
     </tr>`;
+}
+
+function defaultTestSampleRecords() {
+  // Match standard amounts by ID, not position, so a custom standard is never assigned BP/DR/TT mass.
+  return AMT29_TEST_DATA.samples.map(sample => ({
+    prefix: SAMPLE_PREFIX_HEADERS.map(header => sample[header] ?? ""),
+    extra: extraSampleHeaders.map(header => sample[header] ?? ""),
+    standards: getInternalStandardIds().map(id => sample[`${id}_ng`] ?? ""),
+    tail: SAMPLE_TAIL_HEADERS.map(header => sample[header] ?? "")
+  }));
 }
 
 function standardNameRowHTML(index, name = "") {
@@ -286,7 +294,7 @@ function applyExtraSampleColumns() {
 }
 
 function renderSampleRecords(records) {
-  $("#sampleBody").innerHTML = records.map(record => sampleRowHTML(record, false)).join("");
+  $("#sampleBody").innerHTML = records.map(record => sampleRowHTML(record)).join("");
   $("#sampleCount").value = String(records.length);
 }
 
@@ -564,7 +572,7 @@ function setSampleRowCount(value) {
   let rows = Array.from(body.querySelectorAll("tr"));
 
   while (rows.length < count) {
-    body.insertAdjacentHTML("beforeend", sampleRowHTML({}, false));
+    body.insertAdjacentHTML("beforeend", sampleRowHTML());
     rows = Array.from(body.querySelectorAll("tr"));
   }
   while (rows.length > count) {
@@ -969,8 +977,7 @@ function copyCommands() {
 function init() {
   renderStandardSections(DEFAULT_INTERNAL_STANDARDS);
   renderSampleHeader();
-  $("#sampleBody").innerHTML = sampleRowHTML();
-  $("#sampleCount").value = String($$("#sampleBody tr").length);
+  renderSampleRecords(defaultTestSampleRecords());
   updateDatabaseSetupText();
   const internalStandardsEnabled = $("#intstdToggle").checked;
   setVisible("intstdBlock", internalStandardsEnabled);

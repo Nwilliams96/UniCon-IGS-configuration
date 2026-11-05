@@ -4,9 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UniCon-IGS — Universal Amplicon Pipeline Configuration</title>
+  <link rel="canonical" href="https://www.nathanlrwilliams.com/UniCon-IGS/" />
+  <script src="js/canonical-route.js"></script>
   <link rel="stylesheet" href="css/style.css?v=full-width-note-20260804" />
   <script defer src="js/jszip.min.js"></script>
-  <script defer src="js/script.js?v=flexible-sample-columns-20260810"></script>
+  <script defer src="js/amt29-test-data.js?v=20261105"></script>
+  <script defer src="js/script.js?v=amt29-test-20261105"></script>
 </head>
 <body>
   <div class="progress-wrap" aria-hidden="true"><div class="progress" id="progress"></div></div>
@@ -32,7 +35,6 @@
 
   <main class="page">
     <section class="card intro" id="overview">
-      <div class="section-kicker">Step 0 • Overview</div>
       <div class="welcome-layout">
         <div class="welcome-copy">
           <h2>Welcome to UniCon-IGS</h2>
@@ -48,7 +50,7 @@
           <p>
             Use the sections below in order, then download the generated setup package when you are finished.
             The latest tested workflow is available in the
-            <a class="requirement-link" href="https://github.com/Nwilliams96/515FY-926R-snakemake-NW-edits" target="_blank" rel="noopener">pipeline repository on GitHub</a>.
+            <a class="requirement-link" href="https://github.com/Nwilliams96/UniCon-IGS" target="_blank" rel="noopener">pipeline repository on GitHub</a>.
           </p>
         </div>
         <div class="welcome-artwork">
@@ -145,6 +147,47 @@
           there. Yi-Chun Yeh, Melody Aleman, and Colette Fletcher-Hoppe have since made important contributions,
           many inspired by Jed Fuhrman’s ideas.
         </p>
+        <h3 id="test-dataset">Test Dataset</h3>
+        <p>
+          Try UniCon-IGS with ten surface-seawater DNA samples from the 2019 Atlantic Meridional Transect
+          (AMT29): <code>AMT29_02</code> through <code>AMT29_11</code>. These paired-end 515Y/926R reads
+          include bacterial, archaeal and eukaryotic SSU amplicons and were prepared with BP, DR and TT
+          genomic internal standards. The public archive is
+          <a class="requirement-link" href="https://www.ebi.ac.uk/ena/browser/view/PRJNA1226253" target="_blank" rel="noopener">BioProject PRJNA1226253</a>;
+          the dataset is described by
+          <a class="requirement-link" href="https://doi.org/10.1093/ismeco/ycaf131" target="_blank" rel="noopener">Bei et al. (2025)</a>.
+        </p>
+        <p>
+          The download is approximately <strong>537 MB</strong>: 20 compressed FASTQs, one R1 and one R2
+          for each sample. Run these commands in Terminal on your computer or HPC, from the parent directory
+          where you will clone your project. The downloader checks every file against the archive checksum,
+          resumes partial downloads, reuses verified files, and refuses to overwrite conflicting files.
+        </p>
+        <div class="code-panel">
+          <div class="code-panel__bar">
+            <span>Download the ten AMT29 samples</span>
+            <button class="copy-btn" data-copy="#testDownloadCode">Copy</button>
+          </div>
+          <pre id="testDownloadCode">curl --fail --location --retry 5 \
+  https://www.nathanlrwilliams.com/UniCon-IGS/downloads/download-AMT29-test.sh \
+  --output download-AMT29-test.sh
+bash download-AMT29-test.sh "$PWD/AMT29-test-data"</pre>
+        </div>
+        <p>
+          These ten samples are already loaded in the <a class="requirement-link" href="#samples">Sample File table</a>,
+          with their dates, coordinates, depths, SRA accessions, individual spike-in masses and 1 L normalization.
+          You can also <a class="requirement-link" href="data/AMT29-test-samples.tsv" download>download their samples.tsv</a>.
+          With the project clone beside the downloaded data folder, use <code>../AMT29-test-data</code> as
+          the raw-data location and keep the <code>.R1.fastq.gz</code> / <code>.R2.fastq.gz</code> endings.
+          Replace the sample rows and paths when using your own dataset.
+        </p>
+        <aside class="note">
+          For this dataset, enable internal-standard correction if you want to test that module, and keep the
+          BP/DR/TT definitions and recorded per-sample amounts. Leave the option off for your own samples if no
+          genomic standards were added. The amplicon-molarity fields below contain illustrative values, not
+          measured AMT29 pool concentrations; supply the appropriate measurements before interpreting
+          16S/18S-corrected abundances quantitatively.
+        </aside>
       </div>
     </section>
 
@@ -183,7 +226,7 @@ snakemake --version</pre>
         <h3>Clone the pipeline repository</h3>
         <p>
           Choose a project name for this analysis. The generated command clones the pipeline from the public
-          <a class="requirement-link" href="https://github.com/Nwilliams96/515FY-926R-snakemake-NW-edits" target="_blank" rel="noopener">pipeline repository</a>
+          <a class="requirement-link" href="https://github.com/Nwilliams96/UniCon-IGS" target="_blank" rel="noopener">pipeline repository</a>
           into a directory with that project name and then moves into it. You will not need to enter the project name again.
         </p>
         <div class="field-group">
@@ -198,7 +241,7 @@ snakemake --version</pre>
             <span>Clone into your project directory</span>
             <button class="copy-btn" data-copy="#clone-code">Copy</button>
           </div>
-          <pre id="clone-code">git clone https://github.com/Nwilliams96/515FY-926R-snakemake-NW-edits.git AMT29-analysis
+          <pre id="clone-code">git clone https://github.com/Nwilliams96/UniCon-IGS.git AMT29-analysis
 cd AMT29-analysis</pre>
         </div>
       </div>
@@ -308,7 +351,7 @@ cd AMT29-analysis</pre>
         </div>
         <div class="field-group">
           <label for="rawdatadir">FASTQ directory path</label>
-          <input id="rawdatadir" type="text" value="/project2/fuhrman_1138/GRUMP/version-2/AMT29-DNA/00-raw" />
+          <input id="rawdatadir" type="text" value="../AMT29-test-data" />
           <div class="hint">Enter the directory containing the FASTQ files. A trailing slash is optional.</div>
         </div>
 
@@ -621,14 +664,14 @@ cd AMT29-analysis</pre>
       <div class="sample-count-control">
         <div class="field-group">
           <label for="sampleCount">Number of samples</label>
-          <input id="sampleCount" type="number" value="1" min="1" max="500" inputmode="numeric" />
+          <input id="sampleCount" type="number" value="10" min="1" max="500" inputmode="numeric" />
           <div class="hint">The table updates automatically. A spreadsheet range can be pasted starting in any cell.</div>
         </div>
       </div>
 
       <div class="field-group">
         <label for="extraSampleColumns">Additional sample metadata columns</label>
-        <input id="extraSampleColumns" type="text" value="replicate, condition, Depth (m), Latitude and Longitude, Longitude [degrees_east], Latitude [degrees_north], time" placeholder="station, treatment, extraction_batch" />
+        <input id="extraSampleColumns" type="text" value="replicate, condition, Depth (m), Longitude [degrees_east], Latitude [degrees_north], time, sra_run, biosample" placeholder="station, treatment, extraction_batch" />
         <div class="hint">Optional. This list defines every metadata column besides <code>sample</code> and the internal-standard fields. Add, rename, or remove columns—including depth, latitude, and longitude—then apply the list. The chosen columns are preserved downstream and become filters in the HTML taxonomy report.</div>
         <div class="actions compact-actions">
           <button class="secondary" id="applyExtraSampleColumnsBtn" type="button">Apply metadata columns</button>

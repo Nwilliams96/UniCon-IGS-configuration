@@ -1,16 +1,54 @@
-# Universal Amplicon Website v3
+# UniCon-IGS Configuration
 
 This repository contains the configuration builder for the
-[515Y–926R eASV Snakemake pipeline](https://github.com/Nwilliams96/515FY-926R-snakemake-NW-edits).
+[UniCon-IGS 515Y–926R Snakemake pipeline](https://github.com/Nwilliams96/UniCon-IGS).
 
 The published configuration page is available at
-[www.nathanlrwilliams.com/eASV-Pipeline-Tutorial](https://www.nathanlrwilliams.com/eASV-Pipeline-Tutorial/).
+[www.nathanlrwilliams.com/UniCon-IGS](https://www.nathanlrwilliams.com/UniCon-IGS/).
 
 ## Files
 - `index.html`
 - `css/style.css`
 - `js/script.js`
 - `js/jszip.min.js`
+- `js/amt29-test-data.js`
+- `js/canonical-route.js`
+- `data/AMT29-test-samples.tsv`
+- `data/AMT29-test-downloads.tsv`
+- `downloads/download-AMT29-test.sh`
+
+## Public test dataset
+
+The Sample File table starts with AMT29_02–AMT29_11: ten surface-seawater DNA
+samples from BioProject PRJNA1226253. Their archive accessions, collection
+metadata, recorded BP/DR/TT masses and 1 L normalization are included in the
+editable TSV download. Internal-standard correction remains opt-in.
+
+The Test Dataset section supplies a Bash downloader for the 20 paired FASTQs
+(approximately 537 MB). It verifies archive checksums, resumes partial files,
+reuses verified downloads, and refuses to overwrite conflicting final files.
+No raw FASTQs are stored in either Git repository. See [data/README.md](data/README.md)
+for sources and the distinction between measured sample metadata and the
+illustrative amplicon-molarity fields.
+
+## Publishing and redirects
+
+The source repository is
+[UniCon-IGS-configuration](https://github.com/Nwilliams96/UniCon-IGS-configuration).
+The preferred public path is `/UniCon-IGS/` on Nathan's personal domain. Its
+static files are published in the `UniCon-IGS/` directory of
+[Nwilliams96.github.io](https://github.com/Nwilliams96/Nwilliams96.github.io).
+When releasing configuration changes, synchronize the tested, committed
+`index.html`, `css/`, `js/`, `images/`, `data/` and `downloads/` assets to that
+directory; do not copy local uncommitted changes or raw data. This deployment
+copy is not a separate development source.
+
+The personal site keeps `/eASV-Pipeline-Tutorial/` as a browser redirect to the
+preferred path. `js/canonical-route.js` also redirects the former and renamed
+configuration-repository Pages paths, preserving query strings and section
+links. Local `file://` previews are not redirected. GitHub redirects old Git
+repository URLs after a rename, but does not provide the equivalent redirect
+for project Pages URLs; the explicit website redirects are therefore retained.
 
 ## Notes
 - Prefilled fields are styled in light grey.

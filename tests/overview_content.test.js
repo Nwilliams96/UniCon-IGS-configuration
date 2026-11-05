@@ -1,0 +1,17 @@
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const test = require("node:test");
+
+const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+const css = fs.readFileSync(path.join(__dirname, "..", "css", "style.css"), "utf8");
+
+test("welcome section no longer displays the Step 0 overview label", () => {
+  assert.doesNotMatch(html, /Step 0\s*•\s*Overview/);
+  assert.match(html, /<h2>Welcome to UniCon-IGS<\/h2>/);
+});
+
+test("Bioanalyzer figures are narrower on large screens but responsive on small screens", () => {
+  assert.match(css, /\.preamble-figure\s*\{\s*width:\s*min\(100%,\s*1000px\);\s*margin:\s*30px auto/);
+  assert.equal((html.match(/<figure class="preamble-figure">/g) || []).length, 2);
+});
