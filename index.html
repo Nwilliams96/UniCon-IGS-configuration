@@ -33,21 +33,28 @@
   <main class="page">
     <section class="card intro" id="overview">
       <div class="section-kicker">Step 0 • Overview</div>
-      <h2>Welcome</h2>
-      <p>
-        Welcome to the universal amplicon pipeline configuration and setup workflow. This workflow helps you go from
-        demultiplexed amplicon FASTQ files to a ready-to-run Snakemake configuration package.
-      </p>
-      <p>
-        The pipeline was designed around the 515F/926R universal primer pair, but it can be used with other amplicon
-        primers provided the primer section is filled out correctly. It supports 16S and 18S reads, internal standards,
-        and the metadata needed to generate the final files.
-      </p>
-      <p>
-        Use the sections below in order, then download the generated setup package when you are finished.
-        The latest tested workflow is available in the
-        <a class="requirement-link" href="https://github.com/Nwilliams96/515FY-926R-snakemake-NW-edits" target="_blank" rel="noopener">pipeline repository on GitHub</a>.
-      </p>
+      <div class="welcome-layout">
+        <div class="welcome-copy">
+          <h2>Welcome to UniCon-IGS</h2>
+          <p>
+            Welcome to the universal amplicon pipeline configuration and setup workflow. This workflow helps you go from
+            demultiplexed amplicon FASTQ files to a ready-to-run Snakemake configuration package.
+          </p>
+          <p>
+            The pipeline was designed around the 515F/926R universal primer pair, but it can be used with other amplicon
+            primers provided the primer section is filled out correctly. It supports 16S and 18S reads, internal standards,
+            and the metadata needed to generate the final files.
+          </p>
+          <p>
+            Use the sections below in order, then download the generated setup package when you are finished.
+            The latest tested workflow is available in the
+            <a class="requirement-link" href="https://github.com/Nwilliams96/515FY-926R-snakemake-NW-edits" target="_blank" rel="noopener">pipeline repository on GitHub</a>.
+          </p>
+        </div>
+        <div class="welcome-artwork">
+          <img class="welcome-logo" src="images/unicon-combined-transparent.png" alt="UniCon unicorn and graffiti-style wordmark" width="1504" height="1046" />
+        </div>
+      </div>
 
       <div class="preamble">
         <h3>Why use a universal SSU rRNA primer set?</h3>

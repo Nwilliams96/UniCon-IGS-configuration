@@ -511,10 +511,10 @@ pre {
 
 /* GRUMP workshop visual system */
 :root {
-  --bg: #f7f7f4;
-  --panel: #f7f7f4;
-  --panel-soft: #ffffff;
-  --border: #cfcfca;
+  --bg: #f3ead7;
+  --panel: #f3ead7;
+  --panel-soft: #fcf8ef;
+  --border: #d6cbb6;
   --text: #101010;
   --muted: #636363;
   --green-dark: #101010;
@@ -555,7 +555,7 @@ a { text-underline-offset: 4px; }
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(247, 247, 244, 0.96);
+  background: rgba(243, 234, 215, 0.96);
   color: var(--text);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(12px);
@@ -688,12 +688,40 @@ a { text-underline-offset: 4px; }
 .card p,
 .intro p { color: var(--text); }
 
-.intro > p:first-of-type {
+.intro > p:first-of-type,
+.welcome-copy > p:first-of-type {
   max-width: var(--content-width);
   color: var(--muted);
   font-family: var(--serif);
   font-size: clamp(1.15rem, 2vw, 1.45rem);
   line-height: 1.55;
+}
+
+.welcome-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
+  gap: 12px;
+  align-items: center;
+}
+
+.welcome-artwork {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 734 / 763;
+  overflow: hidden;
+}
+
+/* Frame the visible artwork, excluding only the PNG's transparent margins.
+   Both the unicorn and tag remain in their original shared composition. */
+.welcome-logo {
+  position: absolute;
+  display: block;
+  width: 204.904632%;
+  max-width: none;
+  height: auto;
+  left: -65.122616%;
+  top: -15.989515%;
+  margin: 0;
 }
 
 .preamble {
@@ -1000,6 +1028,9 @@ pre {
 }
 
 @media (max-width: 760px) {
+  .welcome-layout { grid-template-columns: minmax(0, 1fr); }
+  .welcome-artwork { width: min(100%, 400px); justify-self: center; }
+
   .site-header__inner,
   .page { width: min(calc(100% - 28px), var(--max)); }
 
